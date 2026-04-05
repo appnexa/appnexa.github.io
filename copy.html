@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quick Copy & Remove</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
     <style>
         :root {
             --primary-color: #27ae60;
@@ -19,6 +21,33 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            position: relative;
+        }
+
+        /* --- STYLE TOMBOL HOME --- */
+        .home-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: white;
+            color: #555;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            font-size: 1.2rem;
+            transition: 0.3s;
+            z-index: 1000;
+        }
+
+        .home-btn:hover {
+            color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
         }
 
         .container {
@@ -107,6 +136,10 @@
 </head>
 <body>
 
+<a href="https://appnexa.github.io/" class="home-btn" title="Kembali ke Beranda">
+    <i class="fa-solid fa-house"></i>
+</a>
+
 <div class="container">
     <h2>📋 List Copier</h2>
     <p style="color: #666; font-size: 0.85rem; margin-bottom: 10px;">Baris paling atas akan disalin & dihapus</p>
@@ -126,7 +159,6 @@
         const textArea = document.getElementById('inputList');
         const lines = textArea.value.split('\n');
         
-        // Cari baris pertama yang tidak kosong
         let firstLineIndex = -1;
         for (let i = 0; i < lines.length; i++) {
             if (lines[i].trim() !== "") {
@@ -142,15 +174,9 @@
 
         const textToCopy = lines[firstLineIndex].trim();
 
-        // Proses Copy ke Clipboard
         navigator.clipboard.writeText(textToCopy).then(() => {
-            // Hapus baris yang disalin dari array
             lines.splice(firstLineIndex, 1);
-            
-            // Masukkan kembali sisa baris ke textarea
             textArea.value = lines.join('\n').trimStart();
-            
-            // Efek visual
             showToast(`"${textToCopy}" tersalin`);
             animateButton();
         });
